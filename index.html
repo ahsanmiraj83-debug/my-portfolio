@@ -1,55 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Portfolio Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Calculator</title>
+
   <style>
-    body { margin:0; font-family: Arial, sans-serif; background:#f1f5f9; }
-    nav { background:#2563eb; padding:15px; text-align:center; }
-    nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
-    header { text-align:center; padding:40px 20px; background:white; }
-    header img { border-radius:50%; margin-top:15px; }
-    .container { max-width:800px; margin:20px auto; background:white; padding:20px;
-      border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center; }
-    input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius:8px; border:1px solid #ccc; }
-    button { background:#2563eb; color:white; border:none; padding:12px 20px;
-      border-radius:8px; font-size:16px; cursor:pointer; }
-    button:hover { background:#1e40af; }
-    footer { text-align:center; padding:15px; margin-top:20px; background:#2563eb; color:white; }
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#0f172a,#1e293b);
+    }
+
+    .calculator{
+      background:#020617;
+      padding:25px;
+      border-radius:20px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.6);
+      width:320px;
+    }
+
+    #display{
+      width:100%;
+      height:70px;
+      font-size:28px;
+      text-align:right;
+      padding:15px;
+      border:none;
+      border-radius:12px;
+      margin-bottom:15px;
+      background:#e2e8f0;
+    }
+
+    .buttons{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    button{
+      height:60px;
+      font-size:18px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      background:#1e293b;
+      color:white;
+      transition:0.2s;
+    }
+
+    button:hover{
+      transform:scale(1.05);
+      background:#334155;
+    }
+
+    .operator{
+      background:#7c3aed;
+    }
+
+    .equal{
+      background:#2563eb;
+      grid-column:span 2;
+    }
+
+    .equal:hover{
+      background:#1d4ed8;
+    }
+
+    .clear{
+      background:#ef4444;
+    }
+
+    .clear:hover{
+      background:#dc2626;
+    }
   </style>
 </head>
+
 <body>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-  </nav>
+<div class="calculator">
+  <input type="text" id="display" readonly>
 
-  <header>
-    <h1>Welcome to My Portfolio</h1>
-    <p>I am learning web development and AI 🚀</p>
-    <img src="https://via.placeholder.com/150" alt="My Photo" />
-  </header>
+  <div class="buttons">
+    <button class="clear" onclick="clearDisplay()">C</button>
+    <button onclick="deleteLast()">⌫</button>
+    <button class="operator" onclick="append('%')">%</button>
+    <button class="operator" onclick="append('/')">÷</button>
 
-  <div class="container">
-    <h2>About Me</h2>
-    <p>My name is Ahsan. I am a Class 9 student and future programmer.</p>
+    <button onclick="append('7')">7</button>
+    <button onclick="append('8')">8</button>
+    <button onclick="append('9')">9</button>
+    <button class="operator" onclick="append('*')">×</button>
 
-    <h2>Click the Button</h2>
-    <button onclick="showMessage()">Click Me</button>
+    <button onclick="append('4')">4</button>
+    <button onclick="append('5')">5</button>
+    <button onclick="append('6')">6</button>
+    <button class="operator" onclick="append('-')">−</button>
+
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button>
+    <button class="operator" onclick="append('+')">+</button>
+
+    <button onclick="append('0')">0</button>
+    <button onclick="append('.')">.</button>
+    <button class="equal" onclick="calculate()">=</button>
   </div>
+</div>
 
-  <footer>
-    <p>© 2026 My Portfolio Website</p>
-  </footer>
+<script>
+const display = document.getElementById("display");
 
-  <script>
-    function showMessage() {
-      alert("Welcome Ahsan! Keep learning coding and AI 🚀");
-    }
-  </script>
+function append(value){
+  display.value += value;
+}
+
+function clearDisplay(){
+  display.value = "";
+}
+
+function deleteLast(){
+  display.value = display.value.slice(0, -1);
+}
+
+function calculate(){
+  try{
+    display.value = Function("return " + display.value)();
+  }catch{
+    display.value = "Error";
+  }
+}
+
+/* Keyboard Support */
+document.addEventListener("keydown", (e)=>{
+  if("0123456789+-*/.%".includes(e.key)) append(e.key);
+  if(e.key === "Enter") calculate();
+  if(e.key === "Backspace") deleteLast();
+  if(e.key === "Escape") clearDisplay();
+});
+</script>
 
 </body>
 </html>
